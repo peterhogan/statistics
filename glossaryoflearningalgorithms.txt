@@ -1,0 +1,21 @@
+Glossary of Learning Algorithms
+Contents:
+  Supervised Learning
+    - Linear Regression
+    - Logistic Regression
+    - Polynomial Regression
+    - 
+  Unsupervised Learning
+    - K-means Clustering
+    - Self-Organising Map (SOM)
+    - Principal Component Analysis (PCA)
+  Hybrid Learning
+  
+Supervised Learning
+
+Linear Regression
+
+Definition:
+Typical use cases:
+Advantages:
+Disadvantages:
