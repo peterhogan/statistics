@@ -13,4 +13,15 @@ circle <- function(samples,diameter,stdev) {
   plt.data = do.call(rbind,datalist)
   return(plt.data)
 }
-plot(circle(1E3, 6, 1), xlim = c(-15,15), ylim = c(-15,15))
+
+circ1 = circle(400, 5, 1)
+
+#plot(circ1, xlim = c(-15,15), ylim = c(-15,15), col = 1)
+dims = c(-40,40)
+plot(circ1, xlim = dims, ylim = dims,col = 3)
+
+circ1.means <- apply(circ1, 2, mean)
+circ1.vars <- apply(circ1, 2,var)
+
+estim.circ <- data.frame(x = rnorm(400, mean = circ1.means['x'], sd = circ1.vars['x']), y = rnorm(400, mean = circ1.means['y'], sd = circ1.vars['y']))
+points(estim.circ, col = 2)
