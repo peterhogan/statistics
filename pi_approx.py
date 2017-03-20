@@ -14,7 +14,7 @@ inCirc = []
 outCirc = []
 
 start = time()
-iterations = 1E7
+iterations = 1E8
 
 for i in range(1,int(iterations)):
     point = [uniform(low=0.0, high=1.0),uniform(low=0.0, high=1.0)]
