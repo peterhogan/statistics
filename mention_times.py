@@ -15,14 +15,14 @@ class Entity(object):
         self.name = name
         self.cache = []
         self.diffs = []
-        #self.avg = avg
-        #self.dist = dist
 
-    def mention(self):
-        tm = localtime()
-        ptm = strftime("%Y-%m-%d %H:%M:%S", tm)
-        #print(ptm)
-        self.cache.append(ptm)
+    def ld(self,inputfile):
+        with open(inputfile, 'r') as f:
+            fileopen = f.read()
+            lines = fileopen.splitlines()
+            quoteless = [i[1:-1] for i in lines]
+        self.cache = quoteless
+        self.differences()
 
     def differences(self):
         for i in range(len(self.cache)):
@@ -34,9 +34,12 @@ class Entity(object):
             except IndexError:
                 pass
         return self.diffs
+    def trim(self, amount):
+        perc = int(amount * len(self.diffs))
+        self.diffs = sorted(self.diffs)[:-perc]
 
     def x(self):
-        x = linspace(0,max(self.diffs),100)
+        x = linspace(0,max(self.diffs),len(self.diffs))
         return x
 
     def fit_params(self):
@@ -46,29 +49,53 @@ class Entity(object):
     def fit(self):
         x = self.x()
         param = self.fit_params()
-        pdf_fitted = gamma.pdf(x, param[0])
+        pdf_fitted = gamma.pdf(x, param[0], param[1], param[2])
         return pdf_fitted
         #return [pdf_fitted,param,x]
 
     def __str__(self):
         return self.name+": "+str(self.cache)
 
-t1 = Entity("Hello")
-
-while len(t1.cache) < 30:
-    t1.mention()
-    sleep(gamma.rvs(1))
-
-print(t1.diffs)
-
 '''
-print(t1.differences())
-for t in t1.differences():
-    print(t)
-t1fit = t1.fit()
-print(t1.fit_params())
+loc_pars = []
+for i in linspace(0.05,0.4,100):
+    t2 = Entity(str(i))
+    t2.ld('all.list')
+    print('Cleaning by',i,'..')
+    t2.clean(i)
+    t2fit = t2.fit()
+    fitp = t2.fit_params()
+    print(fitp)
+    loc_pars.append(fitp[1])
 
-plot(t1.x(), t1fit,'-r')
-hist(t1.diffs)
+print(loc_pars)
+print(min([abs(i) for i in loc_pars]))
+'''
+
+avls = []
+
+t2 = Entity('test')
+t2.ld('noall.list')
+x = t2.x()
+
+a_val = 0
+incr = 0.01
+val = 0.27
+#while a_val < 1:
+while len(avls) < 60:
+    t2 = Entity('test')
+    t2.ld('noall.list')
+    t2.trim(val)
+    t2fit = t2.fit()
+    fps = t2.fit_params()
+    a_val = fps[0]
+    avls.append(a_val)
+    print("Trimming",val," -- at --",a_val)
+    val += incr
+    plot(t2.x(), t2fit)
+
+#plot(range(len(avls)),avls)
+
+#plot(t2.x(), t2fit,'-r')
+hist(t2.diffs,normed=1,alpha=0.3)
 show()
-'''

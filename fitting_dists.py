@@ -1,12 +1,9 @@
-from scipy.stats import norm
+from scipy.stats import norm,gamma
 from numpy import linspace
 from pylab import plot,show,hist,figure,title
 
-# picking 150 of from a normal distrubution
-# with mean 0 and standard deviation 1
 samp = norm.rvs(loc=0,scale=1,size=150) 
 print(samp)
-
 param = norm.fit(samp) # distribution fitting
 
 # now, param[0] and param[1] are the mean and 
